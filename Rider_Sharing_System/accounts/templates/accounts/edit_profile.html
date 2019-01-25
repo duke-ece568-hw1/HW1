@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Profile</title>
+{% endblock%}
+
+{% block body %}
+<!--This is where we refer to all those data in user model-->
+<div class="container">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="button">submit</button>
+  </form>
+
+</div>
+
+{% endblock %}
