@@ -37,14 +37,13 @@ def driver_register(request):
     if request.method == 'POST':
         form = Driver_Form(request.POST)
         #user = get_object_or_404(User,user=request.user)
-        user_profile = get_object_or_404(UserInfo, user=request.user)
-        """
-        if form.is_valid():
-            user_profile.vehicle_id = form.cleaned_data['vehicle_id']
-            user_profile.vehicle_max_passenger = form.cleaned_data['vehicle_max_passenger']
-            user_profile.save()
-            """
-        return HttpResponseRedirect('/accounts/')
+        user_profile = UserInfo.objects.filter(user=request.user)[0]
+        if user_profile.length() == 1:
+            if form.is_valid():
+                user_profile.vehicle_id = form.cleaned_data['vehicle_id']
+                user_profile.vehicle_max_passenger = form.cleaned_data['vehicle_max_passenger']
+                user_profile.save()
+                return HttpResponseRedirect('/accounts/')
     else:
         form = Driver_Form(instance=request.user)
         args = {'form': form}
