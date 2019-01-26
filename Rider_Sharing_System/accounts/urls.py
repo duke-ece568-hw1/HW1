@@ -10,7 +10,10 @@ urlpatterns = [
     path('passenger_login/', views.passenger_login),
     path('passenger/', views.passenger_home),
     path('passenger/request', views.make_request),
-    path('driver_login/', auth_views.LoginView.as_view(template_name='accounts/driver_login.html')),
+    path('passenger/request/edit/<int:ride_id>/', views.edit_request),
+    path('driver_login/', views.driver_login),
+    path('driver/pickup/<int:ride_id>/', views.pickup),
+    path('driver/', views.driver_home),
 
     #path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html')),
     path('logout/', auth_views.LogoutView.as_view(template_name='accounts/logout.html')),

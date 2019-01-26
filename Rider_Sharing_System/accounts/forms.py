@@ -8,7 +8,7 @@ class RegistrationForm(UserCreationForm):
     username = forms.CharField(required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    isDriver = forms.BooleanField(required=False)
+#    isDriver = forms.BooleanField(required=False)
 
 
     class Meta:
@@ -72,7 +72,7 @@ class LoginForm(forms.Form):
         return username
     """
 class RequestForm(forms.ModelForm):
-    
+
     destination = forms.CharField(required=True)
     arrival_time = forms.CharField(required=True)
     number_passenger = forms.IntegerField(required=True)

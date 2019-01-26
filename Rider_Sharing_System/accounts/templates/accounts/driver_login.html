@@ -4,14 +4,26 @@
 <div class="container">
   <h1>Welcome to login page!</h1>
   <h5>
-    Please login here to explore more!
+    {% if message %}
+    {{ message }}
+    {% endif %}
   </h5>
+  <h5>Please login here to pick up a ride!</h5>
   <h2>Login</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" name="button">Login</button>
+  <form method="post" action="" enctype="multipart/form-data">
+   {% csrf_token %}
+   {% for field in form %}
+        <div class="fieldWrapper">
+     {{ field.errors }}
+     {{ field.label_tag }} {{ field }}
+     {% if field.help_text %}
+          <p class="help">{{ field.help_text|safe }}</p>
+     {% endif %}
+        </div>
+     {% endfor %}
+   <div class="button-wrapper submit">
+      <input type="submit" value="Login" />
+   </div>
   </form>
 </div>
-
 {% endblock %}

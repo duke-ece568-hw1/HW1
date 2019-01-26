@@ -26,7 +26,8 @@ def register(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/accounts/')
-
+        else:
+            return render(request, 'accounts/reg_form.html', {'form': form})
             #return redirect('/accounts')
     else:
         form = RegistrationForm()
@@ -61,7 +62,12 @@ def passenger_login(request):
 
             if user is not None:
                 auth.login(request, user)
-                return HttpResponseRedirect('/accounts/passenger')
+                user_request_list = Ride.objects.filter(user=request.user)
+                args = {
+                    'user_request_list': user_request_list,
+                    'isRequest': True,
+                }
+                return render(request, 'accounts/passenger.html', args)
 
             else:
                 # 登陆失败
@@ -73,7 +79,9 @@ def passenger_login(request):
     return render(request, 'accounts/passenger_login.html', {'form': form})
 
 def passenger_home(request):
-    return render(request, 'accounts/passenger.html')
+    user_request_list = Ride.objects.filter(user=request.user)
+
+    return render(request, 'accounts/passenger.html', {'user_request_list': user_request_list})
 
 def make_request(request):
     if request.method == 'POST':
@@ -91,15 +99,81 @@ def make_request(request):
             save_it = form.save(commit=False)
             save_it.user = request.user
             save_it.save()
-            return render(request, 'accounts/passenger.html', {'message':'You have requested a ride.'})
+            return render(request, 'accounts/passenger.html', {'message':'You have requested a ride.','isRequest':True})
     else:
         form = RequestForm()
         args = {'form': form}
         return render(request, 'accounts/make_request.html', args)
 
+def edit_request(request, ride_id):
+    if request.method == 'POST':
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            user_request = Ride.objects.filter(id=ride_id)[0]
+            user_request.destination = form.cleaned_data['destination']
+            user_request.arrival_time = form.cleaned_data['arrival_time']
+            user_request.number_passenger = form.cleaned_data['number_passenger']
+            user_request.vehicle_type = form.cleaned_data['vehicle_type']
+            user_request.save()
+            return redirect('../../../')
+
+    else:
+        user_request = Ride.objects.filter(id=ride_id)[0]
+        form = RequestForm(instance=user_request)
+        return render(request, 'accounts/edit_request.html', {'form':form})
+
+def driver_home(request):
+    history_pickup_list = Ride.objects.filter(driver_id=request.user.id, isFinished=True)
+    current_pickup = Ride.objects.filter(driver_id=request.user.id, isFinished=False)
+    return render(request, 'accounts/driver.html',
+            {'history_pickup_list': history_pickup_list, 'current_pickup': current_pickup})
+
+def driver_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+
+            user = auth.authenticate(username=username, password=password)
+            if user is not None:
+                auth.login(request, user)
+                userinfo = UserInfo.objects.filter(user=request.user)[0]
+                if(userinfo.isDriver == True):
+                    ride_list = Ride.objects.all()
+                    return render(request, 'accounts/driver.html',
+                        {'ride_list': ride_list}
+                        )
+                else:
+                    auth.logout(request)
+                    return render(request, 'accounts/driver_login.html',
+                    {'form': form, 'message': 'You are not a DRIVER.Please login as a passenger.'})
+            else:
+            # 登陆失败
+              return render(request, 'accounts/driver_login.html', {'form': form,
+                           'message': 'Wrong password. Please try again.'})
+
+    else:
+        form = LoginForm()
+        return render(request, 'accounts/driver_login.html', {'form': form})
+
+def pickup(request, ride_id):
+    selected_ride = Ride.objects.filter(id=ride_id)[0]
+    driver_info = UserInfo.objects.filter(user=request.user)[0]
+    if selected_ride.number_passenger <= driver_info.vehicle_max_passenger:
+        selected_ride.isPicked = True
+        selected_ride.save()
+        return HttpResponseRedirect('accounts/driver')
+    else:
+        return HttpResponseRedirect('acc')
+
+
+
 @login_required
 def view_profile(request):
-    args = {'user': request.user}
+    user_info = UserInfo.objects.filter(user=request.user)[0]
+    args = {'user': request.user, 'user_info':user_info}
     return render(request, 'accounts/profile.html', args)
 
 

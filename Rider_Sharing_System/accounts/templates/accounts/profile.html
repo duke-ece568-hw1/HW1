@@ -11,7 +11,11 @@
   <p>{{ user.first_name }}</p>
   <p>{{ user.last_name }}</p>
   <p>{{ user.email }}</p>
-  <p>{{ user.userprofile.description}}</p>
+  {% if user_info.isDriver %}
+    <p>{{ user_info.isDriver }}</p>
+    <p>{{ user_info.vehicle_id }}</p>
+    <p>{{ user_info.vehicle_max_passenger }}</p>
+  {% endif %}
 </div>
 
 {% endblock %}

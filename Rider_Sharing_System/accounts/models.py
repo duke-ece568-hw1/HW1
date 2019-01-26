@@ -4,9 +4,6 @@ from django.db.models.signals import post_save
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    description = models.CharField(max_length=100, default='')
-    city = models.CharField(max_length=100, default='')
-    website = models.URLField(default='')
     phone = models.IntegerField(default=0)
 
     def __str__(self):
@@ -36,6 +33,9 @@ class Ride(models.Model):
     arrival_time = models.CharField(max_length=100, default='20')
     number_passenger = models.IntegerField(default='1')
     vehicle_type = models.CharField(max_length=100, default='')
+    isPicked = models.BooleanField(default=False)
+    isFinished = models.BooleanField(default=False)
+    driver_id = models.IntegerField(default='0')
     def __str__(self):
         return self.user.username
 

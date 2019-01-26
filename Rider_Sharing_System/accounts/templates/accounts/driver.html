@@ -1,0 +1,45 @@
+{%extends 'base.html'%}
+  {% block passenger_driver %}
+  <li><a href="/accounts/driver/pickup">Pickup</a></li>
+  {% endblock %}
+  {% block body %}
+    {% if message %}
+    {{ message }}
+    {% endif %}
+    {% csrf_token %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">Current Ride</div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead></thead>
+            <tbody id = "add-body">
+            {% if current_pickup %}
+                <tr id="ride_{{ ride.id }}">
+                    <td>{{ ride.destination }}</td>
+                    <td>{{ ride.arrival_time }}</td>
+                    <td><a href="../driver/pickup/{{ ride.id }}/">Finish</a></td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="panel panel-success">
+        <div class="panel-heading">History rides</div>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+            <tr>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id = "add-body">
+            {% for ride in pickup_list %}
+                <tr id="ride_{{ ride.id }}">
+                    <td>{{ ride.destination }}</td>
+                    <td>{{ ride.arrival_time }}</td>
+                    <td><a href="../driver/pickup/{{ ride.id }}/">Pickup</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  {% endblock %}
