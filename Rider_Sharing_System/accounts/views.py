@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from accounts.forms import RegistrationForm, Driver_Form
+from django.contrib import auth
+from accounts.forms import RegistrationForm, Driver_Form, LoginForm, RequestForm
 #we want to use data stored in the User model
 #from django.contrib.auth.models import User
 #deny some users(not logged in, etc)
 #a decorator allows you to add some functions to a view
 from django.contrib.auth.decorators import login_required
-from accounts.models import UserInfo
+from accounts.models import UserInfo, Ride
 from django.contrib.auth.models import User
 
 
@@ -48,6 +49,53 @@ def driver_register(request):
         form = Driver_Form(instance=request.user)
         args = {'form': form}
         return render(request, 'accounts/edit_profile.html', args)
+
+def passenger_login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = auth.authenticate(username=username, password=password)
+
+            if user is not None:
+                auth.login(request, user)
+                return HttpResponseRedirect('/accounts/passenger')
+
+            else:
+                # 登陆失败
+                  return render(request, 'accounts/passenger_login.html', {'form': form,
+                               'message': 'Wrong password. Please try again.'})
+    else:
+        form = LoginForm()
+
+    return render(request, 'accounts/passenger_login.html', {'form': form})
+
+def passenger_home(request):
+    return render(request, 'accounts/passenger.html')
+
+def make_request(request):
+    if request.method == 'POST':
+        form = RequestForm(request.POST)
+        if form.is_valid():
+            #form.save()
+            """
+            destination = form.cleaned_data['destination']
+            arrival_time = form.cleaned_data['arrival_time']
+            number_passenger = form.cleaned_data['number_passenger']
+            vehicle_type = form.cleaned_data['vehicle_type']
+            ride = Ride(user=request.user, destination=destination, arrival_time=arrival_time,
+                        number_passenger=number_passenger, vehicle_type=vehicle_type)
+                        """
+            save_it = form.save(commit=False)
+            save_it.user = request.user
+            save_it.save()
+            return render(request, 'accounts/passenger.html', {'message':'You have requested a ride.'})
+    else:
+        form = RequestForm()
+        args = {'form': form}
+        return render(request, 'accounts/make_request.html', args)
 
 @login_required
 def view_profile(request):

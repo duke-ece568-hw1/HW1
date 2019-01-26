@@ -4,7 +4,7 @@
 <div class="container">
   <h1>Welcome to login page!</h1>
   <h5>
-    Please login here to explore more!
+    Please choose to login as a passenger or a driver.
   </h5>
   <h2>Login</h2>
   <form method="post">
@@ -12,6 +12,15 @@
     {{ form.as_p }}
     <button type="submit" name="button">Login</button>
   </form>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+      I am a passenger
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+      <li><a href="driver_login/">I am a driver</a></li>
+    </ul>
+  </div>
 </div>
 
 {% endblock %}

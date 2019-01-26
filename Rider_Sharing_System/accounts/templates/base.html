@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-    crossorigin="anonymous">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     {% block head %}
     <title>Login</title>
     {% endblock %}
@@ -21,20 +25,25 @@
           {% if user.is_authenticated %}
           <ul class="nav navbar-nav">
             <li><a href="/accounts/">Home</a></li>
-            <li><a href="/accounts/logout">Log out</a></li>
-            <li><a href="/accounts/profile">Profile</a></li>
+            <li><a href="/accounts/logout/">Log out</a></li>
+            <li><a href="/accounts/profile/">Profile</a></li>
+            {% block passenger_driver %}
+            
+            {% endblock %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/accounts/driver_reg">Driver</a></li>
-            <li><a href="/accounts/register">Register</a></li>
+            <li><a href="/accounts/driver_reg/">Driver</a></li>
+            <li><a href="/accounts/register/">Register</a></li>
           </ul>
           {% else %}
           <ul class="nav navbar-nav">
             <li><a href="/accounts/">Home</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/accounts/login">Login</a></li>
-            <li><a href="/accounts/register">Register</a></li>
+            <li><a href="/accounts/passenger_login/">PassengerLogin</a></li>
+            <li><a href="/accounts/driver_login/">DriverLogin</a></li>
+
+            <li><a href="/accounts/register/">Register</a></li>
           </ul>
           {% endif %}
         </div><!--/.nav-collapse -->

@@ -1,0 +1,9 @@
+{%extends 'base.html'%}
+{% block passenger_driver %}
+<li><a href="/accounts/passenger/request">Request</a></li>
+{% endblock %}
+{% block body %}
+{% if message %}
+{{ message }}
+{% endif %}
+{% endblock %}

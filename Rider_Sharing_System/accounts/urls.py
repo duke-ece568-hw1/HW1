@@ -7,7 +7,12 @@ urlpatterns = [
     path('', views.home),
     path('driver_reg/', views.driver_register),
     path('register/', views.register, name='register'),
-    path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html')),
+    path('passenger_login/', views.passenger_login),
+    path('passenger/', views.passenger_home),
+    path('passenger/request', views.make_request),
+    path('driver_login/', auth_views.LoginView.as_view(template_name='accounts/driver_login.html')),
+
+    #path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html')),
     path('logout/', auth_views.LogoutView.as_view(template_name='accounts/logout.html')),
     path('profile/', views.view_profile, name='profile'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),

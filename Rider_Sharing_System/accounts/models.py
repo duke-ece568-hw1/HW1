@@ -30,5 +30,19 @@ def create_user_info(sender, **kwargs):
     if kwargs['created']:
         user_info = UserInfo.objects.create(user=kwargs['instance'])
 
+class Ride(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    destination = models.CharField(max_length=100, default='')
+    arrival_time = models.CharField(max_length=100, default='20')
+    number_passenger = models.IntegerField(default='1')
+    vehicle_type = models.CharField(max_length=100, default='')
+    def __str__(self):
+        return self.user.username
+
+def create_ride(sender, **kwargs):
+    if kwargs['created']:
+        user_info = Ride.objects.create(user=kwargs['instance'])
+
 post_save.connect(create_profile, sender=User)
 post_save.connect(create_user_info, sender=User)
+post_save.connect(create_ride, sender=User)
