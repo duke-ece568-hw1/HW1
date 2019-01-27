@@ -9,9 +9,8 @@
             <tr id="ride_{{ ride.id }}">
                 <td>{{ ride.destination }}</td>
                 <td>{{ ride.arrival_time }}</td>
-                {%block join_or_pickup%}
-                <td><a href="/accounts/passenger/join/{{ ride.id }}/">Join</a></td>
-                {%endblock%}
+                {% block pickup_join %}
+                {% endblock %}
             </tr>
         {% endfor %}
         </tbody>

@@ -109,7 +109,7 @@ def search(request):
         return HttpResponseRedirect('/accounts/driver')
     else:
         ride_not_picked_list = Ride.objects.filter(isPicked=False)
-        return render(request, 'accounts/search.html',
+        return render(request, 'accounts/search_pickup.html',
         {'ride_not_picked_list': ride_not_picked_list})
 
 def make_request(request):
@@ -161,7 +161,7 @@ def search_for_join(request):
         return HttpResponseRedirect('/accounts/passenger')
     else:
         ride_not_picked_list = Ride.objects.filter(isPicked=False)
-        return render(request, 'accounts/search.html',
+        return render(request, 'accounts/search_join.html',
         {'ride_not_picked_list': ride_not_picked_list})
 
 def join(request, ride_id):
@@ -223,7 +223,7 @@ def search(request):
         return HttpResponseRedirect('/accounts/driver')
     else:
         ride_not_picked_list = Ride.objects.filter(isPicked=False)
-        return render(request, 'accounts/search.html',
+        return render(request, 'accounts/search_pickup.html',
         {'ride_not_picked_list': ride_not_picked_list})
 
 def pickup(request, ride_id):
