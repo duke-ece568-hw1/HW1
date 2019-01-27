@@ -138,7 +138,7 @@ def edit_request(request, ride_id):
 
 def driver_home(request):
     history_pickup_list = Ride.objects.filter(driver_id=request.user.id, isFinished=True)
-    current_pickup = Ride.objects.filter(driver_id=request.user.id, isFinished=False)
+    current_pickup = Ride.objects.filter(driver_id=request.user.id, isFinished=False)[0]
     return render(request, 'accounts/driver.html',
             {'history_pickup_list': history_pickup_list, 'current_pickup': current_pickup})
 
@@ -189,6 +189,14 @@ def pickup(request, ride_id):
         return HttpResponseRedirect('/accounts')
         #return search(request, context={'message': 'You can\'t pick up that ride.'})
 
+def finish(request, ride_id):
+    selected_ride = Ride.objects.filter(id=ride_id)[0]
+    if selected_ride.isFinished == False:
+        selected_ride.isFinished = True
+        selected_ride.save()
+        return HttpResponseRedirect('/accounts/driver')
+    else:
+        return HttpResponseRedirect('/accounts/driver')
 
 
 @login_required

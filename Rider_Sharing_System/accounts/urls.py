@@ -14,6 +14,7 @@ urlpatterns = [
     path('driver_login/', views.driver_login),
     path('driver/pickup/', views.search),
     path('driver/pickup/<int:ride_id>/', views.pickup),
+    path('driver/finish/<int:ride_id>/', views.finish),
     path('driver/', views.driver_home),
 
     #path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html')),
