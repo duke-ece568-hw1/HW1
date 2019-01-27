@@ -12,7 +12,7 @@ urlpatterns = [
     path('passenger/request', views.make_request),
     path('passenger/request/edit/<int:ride_id>/', views.edit_request),
     path('driver_login/', views.driver_login),
-    path('driver/pickup', views.driver_home),
+    path('driver/pickup/', views.search),
     path('driver/pickup/<int:ride_id>/', views.pickup),
     path('driver/', views.driver_home),
 

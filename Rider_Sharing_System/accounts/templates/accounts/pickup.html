@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{%block body%}
+  <div class="panel panel-success">
+      <div class="panel-heading">All Ride</div>
+      <table class="table table-bordered table-hover table-striped">
+          <thead></thead>
+          <tbody id = "add-body">
+          {% for ride in ride_not_picked_list %}
+              <tr id="ride_{{ ride.id }}">
+                  <td>{{ ride.destination }}</td>
+                  <td>{{ ride.arrival_time }}</td>
+                  <td><a href="/accounts/driver/pickup/{{ ride.id }}/">Pickup</a></td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+  </div>
+{%endblock%}

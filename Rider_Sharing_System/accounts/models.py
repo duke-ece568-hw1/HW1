@@ -15,11 +15,9 @@ def create_profile(sender, **kwargs):
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     isDriver = models.BooleanField(default=False)
     vehicle_id = models.CharField(max_length=20, default='')
     vehicle_max_passenger = models.IntegerField(default=4)
-
     def __str__(self):
         return self.user.username
 

@@ -24,8 +24,24 @@ def register(request):
         #form = UserCreationForm(request.POST)
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/accounts/')
+            #form.save()
+            email = form.cleaned_data['email']
+            username = form.cleaned_data['username']
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            password = form.cleaned_data['password2']
+            user = User.objects.create_user(username=username,
+                    password=password, email=email, first_name=first_name,
+                    last_name=last_name)
+            user_profile = UserInfo(user=user)
+#            user = auth.authenticate(username=username, password=password)
+#            if user is not None:
+            auth.login(request, user)
+            if form.cleaned_data['isDriver'] == True:
+#                request.session['name'] = username
+                return HttpResponseRedirect('/accounts/driver_reg')
+            else:
+                return HttpResponseRedirect('/accounts/')
         else:
             return render(request, 'accounts/reg_form.html', {'form': form})
             #return redirect('/accounts')
@@ -34,20 +50,22 @@ def register(request):
         args = {'form': form}
         return render(request, 'accounts/reg_form.html', args)
 
-# @login_required
 def driver_register(request):
     if request.method == 'POST':
         form = Driver_Form(request.POST)
-
-        #user_profile.count() == 1
         user_profile = UserInfo.objects.filter(user=request.user)[0]
         if form.is_valid():
             user_profile.vehicle_id = form.cleaned_data['vehicle_id']
             user_profile.vehicle_max_passenger = form.cleaned_data['vehicle_max_passenger']
+            user_profile.isDriver = True
             user_profile.save()
+            auth.logout(request)
+            return HttpResponseRedirect('/accounts/')
+        else:
+            auth.logout(request)
             return HttpResponseRedirect('/accounts/')
     else:
-        form = Driver_Form(instance=request.user)
+        form = Driver_Form()
         args = {'form': form}
         return render(request, 'accounts/edit_profile.html', args)
 
@@ -158,15 +176,22 @@ def driver_login(request):
         form = LoginForm()
         return render(request, 'accounts/driver_login.html', {'form': form})
 
+def search(request, context={}):
+    ride_not_picked_list = Ride.objects.filter(isPicked=False)
+    return render(request, 'accounts/pickup.html',
+    {'ride_not_picked_list': ride_not_picked_list})
+
 def pickup(request, ride_id):
     selected_ride = Ride.objects.filter(id=ride_id)[0]
     driver_info = UserInfo.objects.filter(user=request.user)[0]
     if selected_ride.number_passenger <= driver_info.vehicle_max_passenger:
         selected_ride.isPicked = True
+        selected_ride.driver_id = request.user.id
         selected_ride.save()
-        return HttpResponseRedirect('accounts/driver')
+        return HttpResponseRedirect('/accounts/driver')
     else:
-        return HttpResponseRedirect('acc')
+        return HttpResponseRedirect('/accounts')
+        #return search(request, context={'message': 'You can\'t pick up that ride.'})
 
 
 

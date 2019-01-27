@@ -15,9 +15,9 @@
             <tbody id = "add-body">
             {% if current_pickup %}
                 <tr id="ride_{{ ride.id }}">
-                    <td>{{ ride.destination }}</td>
-                    <td>{{ ride.arrival_time }}</td>
-                    <td><a href="../driver/pickup/{{ ride.id }}/">Finish</a></td>
+                    <td>{{ current_pickup.destination }}</td>
+                    <td>{{ current_pickup.arrival_time }}</td>
+                    <td><a href="/accounts/driver/pickup/{{ ride.id }}/">en</a></td>
                 </tr>
             {% endif %}
             </tbody>

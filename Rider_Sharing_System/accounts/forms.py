@@ -3,31 +3,58 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from accounts.models import UserInfo, Ride
 
-class RegistrationForm(UserCreationForm):
+class RegistrationForm(forms.Form):
     email = forms.EmailField(required=True)
     username = forms.CharField(required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-#    isDriver = forms.BooleanField(required=False)
+    isDriver = forms.BooleanField(required=True)
+    password1 = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
+    password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput, required=True)
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
 
-    class Meta:
-        model = User
-        fields = (
-            'username','first_name','last_name','email','password1','password2',
-#            'isDriver','vehicle_max_passenger','vehicle_id',
-            )
-    def save(self, commit=True):
-        user = super(RegistrationForm, self).save(commit=False)
-        user.first_name = self.cleaned_data['first_name']
-                          #prevent hacking
-        user.last_name = self.cleaned_data['last_name']
-        user.email = self.cleaned_data['email']
+        if len(username) < 4:
+            raise forms.ValidationError("Your username must be at least 4 characters long.")
+        elif len(username) > 20:
+            raise forms.ValidationError("Your username is too long.")
+        else:
+            filter_result = User.objects.filter(username__exact=username)
+            if len(filter_result) > 0:
+                raise forms.ValidationError("Your username already exists.")
+        return username
 
-        if commit:
-            user.save()
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
 
-        return user
+        if email_check(email):
+            filter_result = User.objects.filter(email__exact=email)
+            if len(filter_result) > 0:
+                raise forms.ValidationError("Your email already exists.")
+        else:
+            raise forms.ValidationError("Please enter a valid email.")
+
+        return email
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+
+        if len(password1) < 6:
+            raise forms.ValidationError("Your password is too short.")
+        elif len(password1) > 20:
+            raise forms.ValidationError("Your password is too long.")
+
+        return password1
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Password mismatch. Please enter again.")
+
+        return password2
 
 class EditProfileForm(UserChangeForm):
     vehicle_id = forms.CharField(required=True)
