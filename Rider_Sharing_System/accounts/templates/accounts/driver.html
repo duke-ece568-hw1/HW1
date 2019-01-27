@@ -14,10 +14,11 @@
             <thead></thead>
             <tbody id = "add-body">
             {% if current_pickup %}
-                <tr id="ride_{{ ride.id }}">
+                <tr id="ride_{{ current_pickup.id }}">
                     <td>{{ current_pickup.destination }}</td>
                     <td>{{ current_pickup.arrival_time }}</td>
-                    <td><a href="/accounts/driver/finish/{{ ride.id }}/">Finish</a></td>
+                    <td>{{ current_pickup.id }}</td>
+                    <td><a href="/accounts/driver/finish/{{ current_pickup.id }}/">Finish</a></td>
                 </tr>
             {% endif %}
             </tbody>
@@ -32,11 +33,11 @@
             </tr>
             </thead>
             <tbody id = "add-body">
-            {% for ride in pickup_list %}
+            {% for ride in history_pickup_list %}
                 <tr id="ride_{{ ride.id }}">
                     <td>{{ ride.destination }}</td>
                     <td>{{ ride.arrival_time }}</td>
-                    <td><a href="../driver/pickup/{{ ride.id }}/">Pickup</a></td>
+                    <td><a href="../driver/pickup/{{ ride.id }}/">View</a></td>
                 </tr>
             {% endfor %}
             </tbody>

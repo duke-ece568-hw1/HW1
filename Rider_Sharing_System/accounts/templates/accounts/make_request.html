@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {%block body%}
+<div class="bg" style="width:100%;border:1px solid gray;padding:8px;background:#e1efbb url('mountain.jpg')">
 <div class="container">
   <h1>Welcome to request page!</h1>
   <h5>
@@ -10,8 +11,9 @@
   <h2>Request</h2>
   <form method="post" action="" enctype="multipart/form-data">
    {% csrf_token %}
+   {% load widget_tweaks %}
    {% for field in form %}
-        <div class="fieldWrapper">
+        <div class="fieldWrapper font-italic input-group-text " >
      {{ field.errors }}
      {{ field.label_tag }} {{ field }}
      {% if field.help_text %}
@@ -19,9 +21,8 @@
      {% endif %}
         </div>
      {% endfor %}
-   <div class="button-wrapper submit">
-      <input type="submit" value="Requst" />
-   </div>
+    <button type="submit" class="btn btn-success">Log in</button>
   </form>
+</div>
 </div>
 {%endblock%}

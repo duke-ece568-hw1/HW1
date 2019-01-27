@@ -76,12 +76,7 @@ def passenger_login(request):
 
             if user is not None:
                 auth.login(request, user)
-                user_request_list = Ride.objects.filter(user=request.user)
-                args = {
-                    'user_request_list': user_request_list,
-                    'isRequest': True,
-                }
-                return render(request, 'accounts/passenger.html', args)
+                return HttpResponseRedirect('/accounts/passenger')
 
             else:
                 # 登陆失败
@@ -93,31 +88,50 @@ def passenger_login(request):
     return render(request, 'accounts/passenger_login.html', {'form': form})
 
 def passenger_home(request):
-    user_request_list = Ride.objects.filter(user=request.user)
+    history_request_list = Ride.objects.filter(user=request.user, isFinished=True)
+    current_request_list = Ride.objects.filter(user=request.user, isFinished=False)
+    if current_request_list.count() == 0:
+        current_request = None
+    else:
+        current_request = current_request_list[0]
+    return render(request, 'accounts/passenger.html',
+            {'history_request_list': history_request_list, 'current_request': current_request,
+            'message': request.session.get('message', default=None)})
 
-    return render(request, 'accounts/passenger.html', {'user_request_list': user_request_list})
+def search(request):
+    picked_rides = Ride.objects.filter(driver_id=request.user.id, isFinished=False)
+    requested_rides = Ride.objects.filter(user)
+    if len(picked_rides) != 0:
+        request.session['message'] = 'You have unfinished ride.'
+        return HttpResponseRedirect('/accounts/driver')
+    else:
+        ride_not_picked_list = Ride.objects.filter(isPicked=False)
+        return render(request, 'accounts/pickup.html',
+        {'ride_not_picked_list': ride_not_picked_list})
 
 def make_request(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
         if form.is_valid():
-            #form.save()
-            """
-            destination = form.cleaned_data['destination']
-            arrival_time = form.cleaned_data['arrival_time']
-            number_passenger = form.cleaned_data['number_passenger']
-            vehicle_type = form.cleaned_data['vehicle_type']
-            ride = Ride(user=request.user, destination=destination, arrival_time=arrival_time,
-                        number_passenger=number_passenger, vehicle_type=vehicle_type)
-                        """
-            save_it = form.save(commit=False)
-            save_it.user = request.user
-            save_it.save()
-            return render(request, 'accounts/passenger.html', {'message':'You have requested a ride.','isRequest':True})
+            #save_it = form.save(commit=False)
+            newride = Ride(destination=form.cleaned_data['destination'],
+                        arrival_time=form.cleaned_data['arrival_time'],
+                        number_passenger=form.cleaned_data['number_passenger'],
+                        )
+            newride.save()
+            newride.user.add(request.user)
+
+            request.session['message'] = 'You have required a ride.'
+            return HttpResponseRedirect('/accounts/passenger')
     else:
-        form = RequestForm()
-        args = {'form': form}
-        return render(request, 'accounts/make_request.html', args)
+        requested_rides = Ride.objects.filter(user=request.user, isPicked=False)
+        if len(requested_rides) != 0:
+            request.session['message'] = 'You have unfinished ride.'
+            return HttpResponseRedirect('/accounts/passenger')
+        else:
+            form = RequestForm()
+            args = {'form': form}
+            return render(request, 'accounts/make_request.html', args)
 
 def edit_request(request, ride_id):
     if request.method == 'POST':
@@ -136,11 +150,37 @@ def edit_request(request, ride_id):
         form = RequestForm(instance=user_request)
         return render(request, 'accounts/edit_request.html', {'form':form})
 
+def search_for_join(request):
+    requested_rides = Ride.objects.filter(passenger_id=request.user.id, isFinished=False)
+    if len(requested_rides) != 0:
+        request.session['message'] = 'You have unfinished ride.'
+        return HttpResponseRedirect('/accounts/passenger')
+    else:
+        ride_not_picked_list = Ride.objects.filter(isPicked=False)
+        return render(request, 'accounts/search.html',
+        {'ride_not_picked_list': ride_not_picked_list})
+
+def join(request, ride_id):
+    join_ride = Ride.objects.filter(id=ride_id)
+    if join_ride.isPicked == False and join_ride.isFinished == False:
+        join_ride.number_passenger += 1;
+        join_ride.passenger.add(request.user)
+        join_ride.save()
+        return HttpResponseRedirect('/accounts/passenger')
+    else:
+        request.session['message'] = 'Join failed'
+        return HttpResponseRedirect('/accounts/passenger')
+
 def driver_home(request):
     history_pickup_list = Ride.objects.filter(driver_id=request.user.id, isFinished=True)
-    current_pickup = Ride.objects.filter(driver_id=request.user.id, isFinished=False)[0]
+    current_pickup_list = Ride.objects.filter(driver_id=request.user.id, isFinished=False)
+    if current_pickup_list.count() == 0:
+        current_pickup = None
+    else:
+        current_pickup = current_pickup_list[0]
     return render(request, 'accounts/driver.html',
-            {'history_pickup_list': history_pickup_list, 'current_pickup': current_pickup})
+            {'history_pickup_list': history_pickup_list, 'current_pickup': current_pickup,
+            'message': request.session.get('message', default=None)})
 
 def driver_login(request):
     if request.method == 'POST':
@@ -156,9 +196,7 @@ def driver_login(request):
                 userinfo = UserInfo.objects.filter(user=request.user)[0]
                 if(userinfo.isDriver == True):
                     ride_list = Ride.objects.all()
-                    return render(request, 'accounts/driver.html',
-                        {'ride_list': ride_list}
-                        )
+                    return HttpResponseRedirect('/accounts/driver')
                 else:
                     auth.logout(request)
                     return render(request, 'accounts/driver_login.html',
@@ -172,10 +210,15 @@ def driver_login(request):
         form = LoginForm()
         return render(request, 'accounts/driver_login.html', {'form': form})
 
-def search(request, context={}):
-    ride_not_picked_list = Ride.objects.filter(isPicked=False)
-    return render(request, 'accounts/pickup.html',
-    {'ride_not_picked_list': ride_not_picked_list})
+def search(request):
+    picked_rides = Ride.objects.filter(driver_id=request.user.id, isFinished=False)
+    if len(picked_rides) != 0:
+        request.session['message'] = 'You have unfinished ride.'
+        return HttpResponseRedirect('/accounts/driver')
+    else:
+        ride_not_picked_list = Ride.objects.filter(isPicked=False)
+        return render(request, 'accounts/pickup.html',
+        {'ride_not_picked_list': ride_not_picked_list})
 
 def pickup(request, ride_id):
     selected_ride = Ride.objects.filter(id=ride_id)[0]
@@ -209,8 +252,6 @@ def view_profile(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        #take posted data in the request
-        #representing the currently logged-in user.
         form = UserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()

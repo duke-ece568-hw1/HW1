@@ -26,7 +26,7 @@ def create_user_info(sender, **kwargs):
         user_info = UserInfo.objects.create(user=kwargs['instance'])
 
 class Ride(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ManyToManyField(User)
     destination = models.CharField(max_length=100, default='')
     arrival_time = models.CharField(max_length=100, default='20')
     number_passenger = models.IntegerField(default='1')
@@ -34,6 +34,7 @@ class Ride(models.Model):
     isPicked = models.BooleanField(default=False)
     isFinished = models.BooleanField(default=False)
     driver_id = models.IntegerField(default='0')
+    passenger_id = models.IntegerField(default='0')
     def __str__(self):
         return self.user.username
 

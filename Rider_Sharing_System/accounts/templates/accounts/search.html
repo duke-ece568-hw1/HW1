@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{ block body }
+<div class="panel panel-success">
+    <div class="panel-heading">All Rides</div>
+    <table class="table table-bordered table-hover table-striped">
+        <thead></thead>
+        <tbody id = "add-body">
+        {% for ride in ride_not_picked_list %}
+            <tr id="ride_{{ ride.id }}">
+                <td>{{ ride.destination }}</td>
+                <td>{{ ride.arrival_time }}</td>
+                { block join_or_pickup}
+                <td><a href="/accounts/passenger/join/{{ ride.id }}/">Join</a></td>
+                { endblock }
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{ endblock }

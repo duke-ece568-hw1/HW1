@@ -5,17 +5,29 @@
 
 {% block body %}
 <!--This is where we refer to all those data in user model-->
-<div class="container">
-  <h1>Profile</h1>
-  <p>{{ user }}</p>
-  <p>{{ user.first_name }}</p>
-  <p>{{ user.last_name }}</p>
-  <p>{{ user.email }}</p>
+<div class="container" style="width:50% " >
+<h1>Profile</h1>
+<div>
+  <ul  class="container list-group" style = "text-align: center;">
+    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
+">{{ user }}</li>
+    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
+">{{ user.first_name }}</li>
+    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
+">{{ user.last_name }}</li>
+    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
+">{{ user.email }}</li>
+  </ul>
+</div>
   {% if user_info.isDriver %}
-    <p>{{ user_info.isDriver }}</p>
-    <p>{{ user_info.vehicle_id }}</p>
-    <p>{{ user_info.vehicle_max_passenger }}</p>
+  <div>
+    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
+">{{ user_info.isDriver }}</li>
+    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
+">{{ user_info.vehicle_id }}</li>
+    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
+">{{ user_info.vehicle_max_passenger }}</li>
   {% endif %}
 </div>
-
+</div>
 {% endblock %}
