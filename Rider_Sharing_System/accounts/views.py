@@ -83,7 +83,10 @@ def passenger_login(request):
                   return render(request, 'accounts/passenger_login.html', {'form': form,
                                'message': 'Wrong password. Please try again.'})
     else:
-        form = LoginForm()
+        if request.user.is_authenticated :
+            return HttpResponseRedirect('/accounts')
+        else:
+            form = LoginForm()
 
     return render(request, 'accounts/passenger_login.html', {'form': form})
 
@@ -106,7 +109,7 @@ def search(request):
         return HttpResponseRedirect('/accounts/driver')
     else:
         ride_not_picked_list = Ride.objects.filter(isPicked=False)
-        return render(request, 'accounts/pickup.html',
+        return render(request, 'accounts/search.html',
         {'ride_not_picked_list': ride_not_picked_list})
 
 def make_request(request):
@@ -117,6 +120,7 @@ def make_request(request):
             newride = Ride(destination=form.cleaned_data['destination'],
                         arrival_time=form.cleaned_data['arrival_time'],
                         number_passenger=form.cleaned_data['number_passenger'],
+                        passenger_id=request.user.id
                         )
             newride.save()
             newride.user.add(request.user)
@@ -161,10 +165,10 @@ def search_for_join(request):
         {'ride_not_picked_list': ride_not_picked_list})
 
 def join(request, ride_id):
-    join_ride = Ride.objects.filter(id=ride_id)
+    join_ride = Ride.objects.filter(id=ride_id)[0]
     if join_ride.isPicked == False and join_ride.isFinished == False:
         join_ride.number_passenger += 1;
-        join_ride.passenger.add(request.user)
+        join_ride.user.add(request.user)
         join_ride.save()
         return HttpResponseRedirect('/accounts/passenger')
     else:
@@ -188,8 +192,6 @@ def driver_login(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-
-
             user = auth.authenticate(username=username, password=password)
             if user is not None:
                 auth.login(request, user)
@@ -207,17 +209,21 @@ def driver_login(request):
                            'message': 'Wrong password. Please try again.'})
 
     else:
-        form = LoginForm()
-        return render(request, 'accounts/driver_login.html', {'form': form})
+        if request.user.is_authenticated :
+            return HttpResponseRedirect('/accounts')
+        else:
+            form = LoginForm()
+            return render(request, 'accounts/driver_login.html', {'form': form})
 
 def search(request):
     picked_rides = Ride.objects.filter(driver_id=request.user.id, isFinished=False)
-    if len(picked_rides) != 0:
+    requested_rides = Ride.objects.filter(user=request.user, isFinished=False)
+    if len(picked_rides) != 0 or len(requested_rides) != 0:
         request.session['message'] = 'You have unfinished ride.'
         return HttpResponseRedirect('/accounts/driver')
     else:
         ride_not_picked_list = Ride.objects.filter(isPicked=False)
-        return render(request, 'accounts/pickup.html',
+        return render(request, 'accounts/search.html',
         {'ride_not_picked_list': ride_not_picked_list})
 
 def pickup(request, ride_id):
