@@ -42,5 +42,5 @@ def create_ride(sender, **kwargs):
         user_info = Ride.objects.create(user=kwargs['instance'])
 
 post_save.connect(create_profile, sender=User)
-post_save.connect(create_user_info, sender=User)
-post_save.connect(create_ride, sender=User)
+#post_save.connect(create_user_info, sender=User)
+#post_save.connect(create_ride, sender=User)

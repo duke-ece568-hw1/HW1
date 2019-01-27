@@ -8,10 +8,9 @@ class RegistrationForm(forms.Form):
     username = forms.CharField(required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    isDriver = forms.BooleanField(required=True)
+#    isDriver = forms.BooleanField(required=True)
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput, required=True)
     password2 = forms.CharField(label='Password Confirmation', widget=forms.PasswordInput, required=True)
-
     def clean_username(self):
         username = self.cleaned_data.get('username')
 
@@ -25,15 +24,19 @@ class RegistrationForm(forms.Form):
                 raise forms.ValidationError("Your username already exists.")
         return username
 
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
+        # def email_check(email):
+        #     pattern = re.compile(r"\"?([-a-zA-Z0-9.`?{}]+@\w+\.\w+)\"?")
+        #     return re.match(pattern, email)
 
-        if email_check(email):
-            filter_result = User.objects.filter(email__exact=email)
-            if len(filter_result) > 0:
-                raise forms.ValidationError("Your email already exists.")
-        else:
-            raise forms.ValidationError("Please enter a valid email.")
+        # if email_check(email):
+        # filter_result = User.objects.filter(email__exact=email)
+        # if len(filter_result) > 0:
+        #     raise forms.ValidationError("Your email already exists.")
+        # else:
+        #     raise forms.ValidationError("Please enter a valid email.")
 
         return email
 

@@ -19,12 +19,10 @@ def home(request):
     args = {'name': name, 'numbers': numbers}
     return render(request, 'accounts/home.html', args)
 
-def register(request):
+def register(request, isdriver=False):
     if request.method == 'POST':
-        #form = UserCreationForm(request.POST)
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            #form.save()
             email = form.cleaned_data['email']
             username = form.cleaned_data['username']
             first_name = form.cleaned_data['first_name']
@@ -34,17 +32,15 @@ def register(request):
                     password=password, email=email, first_name=first_name,
                     last_name=last_name)
             user_profile = UserInfo(user=user)
-#            user = auth.authenticate(username=username, password=password)
-#            if user is not None:
-            auth.login(request, user)
-            if form.cleaned_data['isDriver'] == True:
-#                request.session['name'] = username
-                return HttpResponseRedirect('/accounts/driver_reg')
-            else:
-                return HttpResponseRedirect('/accounts/')
+            user_profile.vehicle_id = request.POST.get('vehicle_id', None)
+            vehicle_max_passenger = request.POST.get('vehicle_max_passenger', None)
+            user_profile.vehicle_max_passenger = vehicle_max_passenger
+            user_profile.isDriver = True
+            user_profile.save()
+            auth.logout(request)
+            return HttpResponseRedirect('/accounts/')
         else:
             return render(request, 'accounts/reg_form.html', {'form': form})
-            #return redirect('/accounts')
     else:
         form = RegistrationForm()
         args = {'form': form}
