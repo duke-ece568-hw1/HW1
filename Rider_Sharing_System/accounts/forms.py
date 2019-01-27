@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from accounts.models import UserInfo, Ride
-
+from django.core.validators import MaxValueValidator, MinValueValidator
 class RegistrationForm(forms.Form):
     email = forms.EmailField(required=True)
     username = forms.CharField(required=True)
@@ -105,9 +105,12 @@ class RequestForm(forms.ModelForm):
 
     destination = forms.CharField(required=True)
     arrival_time = forms.CharField(required=True)
-    number_passenger = forms.IntegerField(required=True)
-    vehicle_type = forms.CharField(required=False)
-
+    number_passenger = forms.IntegerField(required=True,validators=[MinValueValidator(0), MaxValueValidator(5)])
+    vehicle_type = forms.ChoiceField(choices=( ("Sedan", "Sedan"),
+                                        ("SUV", "SUV"),
+                                        ("Mini Van", "Mini Van"),
+                                        ("Limo", "Limo"),
+                                        ("Truck", "Truck")))
     class Meta:
         model = Ride
         fields = (

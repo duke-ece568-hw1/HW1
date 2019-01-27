@@ -1,51 +1,58 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block body %}
+<style>
+  input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  </style>
 <div class="container">
   <form method="post">
     {% csrf_token %}
-    {% if form.errors %}
-        {% for field in form %}
-            {% for error in field.errors %}
-                <div class="alert alert-danger">
-                    <strong>{{ error|escape }}</strong>
-                </div>
-            {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-            <div class="alert alert-danger">
-                <strong>{{ error|escape }}</strong>
-            </div>
-        {% endfor %}
-    {% endif %}
-    {{ form.as_p }}
+  {{ form | crispy }}
     <div  class="row"  id="tableDivOne" style="display: none;">
-      <table>
-        <tr>
-            <td>vehicle_id</td>
-            <td><input type="text" name="vehicle_id" placeholder="vehicle_id"></td>
-        </tr>
-        <tr>
-            <td>vehicle_max_passenger</td>
-            <td><input type="text" name="vehicle_max_passenger" placeholder="vehicle_max_passenger"></td>
-        </tr>          　　
-      </table>
+            <div style = "text-align:left">
+            vehicle id
+            </div>
+            <input type="text" name="vehicle_id">
+            <div style = "text-align:left">
+            </div>
+            <div class="form-group" style = "text-align:left">
+                <label for="exampleFormControlSelect1">vehicle max passenger</label>
+                <select class="form-control" name="vehicle_max_passenger">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
     </div>
-    <button type="button" id="isdriver_bt"onclick="addBut()" style="display: block">isdriver</button>
-    <button type="button" id="notdriver_bt"onclick="hideBut()" style="display: none">notdriver</button>
-
+    <button type="button" class="btn btn-primary" id="isdriver_bt"onclick="addBut()" style="display: block;margin: 10px; width: 50%">Want to drive for money ? Join us today</button>
+    <button type="button" class="btn btn-secondary" id="notdriver_bt"onclick="hideBut()" style="display: none;margin: 10px;width: 50%">Maybe next time...</button>
     <script type="text/javaScript">
     function addBut(){
       document.getElementById("tableDivOne").style.display="block";
+      document.getElementById("tableDivOne").style.textAlign = "center";
+      document.getElementById("tableDivOne").style.margin = "0px auto";
       document.getElementById("isdriver_bt").style.display="none";
       document.getElementById("notdriver_bt").style.display="block";
     }
     function hideBut(){
       document.getElementById("tableDivOne").style.display="none";
+      document.getElementById("tableDivOne").style.textAlign = "center";
+      document.getElementById("tableDivOne").style.margin = "0px auto";
       document.getElementById("notdriver_bt").style.display="none";
       document.getElementById("isdriver_bt").style.display="block";
     }
     </script>
-    <button type="submit" name="button">Register</button>
+    <button type="submit" class="btn btn-success" name="button" style="display: block;margin: 10px; width: 50%">Register</button>
   </form>
 </div>
 {% endblock%}
