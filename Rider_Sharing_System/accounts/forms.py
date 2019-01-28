@@ -105,12 +105,17 @@ class RequestForm(forms.ModelForm):
 
     destination = forms.CharField(required=True)
     arrival_time = forms.CharField(required=True)
-    number_passenger = forms.IntegerField(required=True,validators=[MinValueValidator(0), MaxValueValidator(5)])
+    number_passenger = forms.ChoiceField(choices=( (1, "1"),
+                                        (2, "2"),
+                                        (3, "3"),
+                                        (4, "4"),
+                                        (5, "5")))
     vehicle_type = forms.ChoiceField(choices=( ("Sedan", "Sedan"),
                                         ("SUV", "SUV"),
-                                        ("Mini Van", "Mini Van"),
+                                        ("Minivan", "Minivan"),
                                         ("Limo", "Limo"),
                                         ("Truck", "Truck")))
+    share_ride= forms.BooleanField(initial=False)
     class Meta:
         model = Ride
         fields = (
@@ -118,4 +123,5 @@ class RequestForm(forms.ModelForm):
             'arrival_time',
             'number_passenger',
             'vehicle_type',
+            'share_ride',
         )

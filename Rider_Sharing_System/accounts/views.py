@@ -205,7 +205,7 @@ def driver_login(request):
 
     else:
         if request.user.is_authenticated :
-            return HttpResponseRedirect('/accounts/')
+            return HttpResponseRedirect('/accounts')
         else:
             form = LoginForm()
             return render(request, 'accounts/driver_login.html', {'form': form})
