@@ -7,19 +7,16 @@
     {{ message }}
     {% endif %}
     {% csrf_token %}
-
     <div class="panel panel-success">
         <div class="panel-heading">Current Ride</div>
         <table class="table table-bordered table-hover table-striped">
             <thead></thead>
             <tbody id = "add-body">
             {% if current_pickup %}
-                <tr id="ride_{{ current_pickup.id }}">
-                    <td>{{ current_pickup.destination }}</td>
-                    <td>{{ current_pickup.arrival_time }}</td>
-                    <td>{{ current_pickup.id }}</td>
-                    <td><a href="/accounts/driver/finish/{{ current_pickup.id }}/">Finish</a></td>
-                </tr>
+                    {{ current_pickup.destination }}
+                    {{ current_pickup.arrival_time }}
+                    {{ current_pickup.id }}
+                    <a href="/accounts/driver/finish/{{ current_pickup.id }}/">Finish</a>
             {% endif %}
             </tbody>
         </table>
