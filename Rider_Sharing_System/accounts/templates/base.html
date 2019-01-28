@@ -33,14 +33,16 @@
           <ul class="nav navbar-nav mr-auto">
             {% block passenger_driver_home %}
             {% endblock %}
-            <li class="nav-item"><a href="/accounts/logout/">Log out</a></li>
+
             <li class="nav-item"><a href="/accounts/profile/">Profile</a></li>
+            <li><a href="/accounts/passenger/request">Request</a></li>
+            <li><a href="/accounts/passenger/join">Join</a></li>
+            <li><a href="/accounts/passenger/">View My Rides</a></li>
             {% block passenger_driver %}
             {% endblock %}
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/accounts/driver_reg/">Driver</a></li>
-            <li><a href="/accounts/register/">Register</a></li>
+            <li class="nav-item"><a href="/accounts/logout/">Log out</a></li>
           </ul>
           {% else %}
           <ul class="nav navbar-nav">
