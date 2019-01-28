@@ -101,7 +101,10 @@ def passenger_home(request):
             {'history_request_list': history_request_list, 'current_request': current_request,
             'message': request.session.get('message', default=None)})
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e493d6e51d11b45a1ac6d57b74fa8ad78de92386
 def make_request(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
@@ -143,6 +146,11 @@ def edit_request(request, ride_id):
         user_request = Ride.objects.filter(id=ride_id)[0]
         form = RequestForm(instance=user_request)
         return render(request, 'accounts/edit_request.html', {'form':form})
+
+def delete_request(request, ride_id):
+    ride = Ride.objects.filter(id=ride_id);
+    ride.delete()
+    return HttpResponseRedirect('/accounts/passenger/')
 
 def search_for_join(request):
     requested_rides = Ride.objects.filter(passenger_id=request.user.id, isFinished=False)
@@ -200,7 +208,7 @@ def driver_login(request):
 
     else:
         if request.user.is_authenticated :
-            return HttpResponseRedirect('/accounts')
+            return HttpResponseRedirect('/accounts/')
         else:
             form = LoginForm()
             return render(request, 'accounts/driver_login.html', {'form': form})
