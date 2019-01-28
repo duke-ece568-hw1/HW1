@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+<div class="bg" style="width:100%;border:1px solid gray;padding:8px;background:#e1efbb url('mountain.jpg')">
+<div class="container">
+  <h5 class="font-weight-bolder">
+    {% if message %}
+    {{ message }}
+    {% endif %}
+    Please login here to request a ride!
+  </h5>
+  <form method="post" action="" enctype="multipart/form-data">
+   {% csrf_token %}
+    {{ form | crispy }}
+    <button type="submit" class="btn btn-success">Log in</button>
+  </form>
+</div>
+</div>
+<div>
+</div>
+{% endblock %}
