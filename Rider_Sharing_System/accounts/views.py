@@ -17,7 +17,7 @@ def home(request):
     numbers = [1, 2, 3, 4, 5]
     name = 'A.W'
     args = {'name': name, 'numbers': numbers}
-    return render(request, 'accounts/home.html', args)
+    return render(request, 'home.html', args)
 
 def register(request, isdriver=False):
     if request.method == 'POST':
@@ -205,7 +205,7 @@ def driver_login(request):
 
     else:
         if request.user.is_authenticated :
-            return HttpResponseRedirect('/accounts/')
+            return HttpResponseRedirect('/accounts')
         else:
             form = LoginForm()
             return render(request, 'accounts/driver_login.html', {'form': form})
