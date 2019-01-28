@@ -21,6 +21,7 @@
                     <td>{{ current_request.number_passenger }}</td>
                     <td>{{ current_request.vehicle_type }}</td>
                     <td><a href="/accounts/passenger/request/edit/{{ current_request.id }}/">Edit</a></td>
+                    <td><a href="/accounts/passenger/request/delete/{{ current_request.id }}/">Delete</a></td>
                 </tr>
             {% endif %}
             </tbody>

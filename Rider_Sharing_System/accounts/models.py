@@ -36,7 +36,7 @@ class Ride(models.Model):
     driver_id = models.IntegerField(default='0')
     passenger_id = models.IntegerField(default='0')
     def __str__(self):
-        return str(self.passenger_id)
+        return str(self.id)
 
 def create_ride(sender, **kwargs):
     if kwargs['created']:

@@ -143,6 +143,11 @@ def edit_request(request, ride_id):
         form = RequestForm(instance=user_request)
         return render(request, 'accounts/edit_request.html', {'form':form})
 
+def delete_request(request, ride_id):
+    ride = Ride.objects.filter(id=ride_id);
+    ride.delete()
+    return HttpResponseRedirect('/accounts/passenger/')
+
 def search_for_join(request):
     requested_rides = Ride.objects.filter(passenger_id=request.user.id, isFinished=False)
     if len(requested_rides) != 0:

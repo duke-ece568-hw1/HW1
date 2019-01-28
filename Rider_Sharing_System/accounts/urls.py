@@ -11,6 +11,9 @@ urlpatterns = [
     path('passenger/', views.passenger_home),
     path('passenger/request/', views.make_request),
     path('passenger/request/edit/<int:ride_id>/', views.edit_request),
+    path('passenger/request/delete/<int:ride_id>/', views.delete_request),
+    path('passenger/request/delete/confirm/', views.delete),
+
     path('passenger/join/', views.search_for_join),
     path('passenger/join/<int:ride_id>/', views.join),
     path('driver_login/', views.driver_login),
