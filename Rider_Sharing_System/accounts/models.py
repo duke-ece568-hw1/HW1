@@ -33,6 +33,7 @@ class Ride(models.Model):
     vehicle_type = models.CharField(max_length=100, default='')
     isPicked = models.BooleanField(default=False)
     isFinished = models.BooleanField(default=False)
+    isSharable = models.BooleanField(default=True)
     driver_id = models.IntegerField(default='0')
     passenger_id = models.IntegerField(default='0')
     def __str__(self):

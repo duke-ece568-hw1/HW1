@@ -150,7 +150,7 @@ def delete_request(request, ride_id):
     return HttpResponseRedirect('/accounts/passenger/')
 
 def search_for_join(request):
-    requested_rides = Ride.objects.filter(passenger_id=request.user.id, isFinished=False)
+    requested_rides = Ride.objects.filter(passenger_id=request.user.id, isFinished=False, isSharable=True)
     if len(requested_rides) != 0:
         request.session['message'] = 'You have unfinished ride.'
         return HttpResponseRedirect('/accounts/passenger')
