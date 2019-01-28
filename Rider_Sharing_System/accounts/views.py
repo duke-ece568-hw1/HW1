@@ -76,7 +76,7 @@ def passenger_login(request):
 
             if user is not None:
                 auth.login(request, user)
-                return HttpResponseRedirect('/accounts/passenger')
+                return HttpResponseRedirect('/accounts/passenger/')
 
             else:
                 # 登陆失败
