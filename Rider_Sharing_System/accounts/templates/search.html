@@ -19,7 +19,8 @@
   vehicle type
   <span class="badge badge-primary badge-pill">{{ride.vehicle_type}}</span>
   </li>
-  <a href="/accounts/driver/pickup/{{ ride.id }}/">Pickup</a>
+  {% block pickup_join %}
+  {% endblock %}
   </ul>
 </div>
 

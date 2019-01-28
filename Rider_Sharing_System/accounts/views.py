@@ -35,7 +35,7 @@ def register(request, isdriver=False):
             user_profile.vehicle_id = request.POST.get('vehicle_id', None)
             vehicle_max_passenger = request.POST.get('vehicle_max_passenger', None)
             user_profile.vehicle_max_passenger = vehicle_max_passenger
-            user_profile.isDriver = request.POST.get('isdriver')
+            user_profile.isDriver = True
             user_profile.save()
             auth.logout(request)
             return HttpResponseRedirect('/accounts/')
