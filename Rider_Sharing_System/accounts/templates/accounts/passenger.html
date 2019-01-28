@@ -11,7 +11,6 @@
     {% csrf_token %}
     <div class="panel panel-success" style = "margin:20px">
             {% if current_request %}
-<<<<<<< HEAD
              <a href="#" class="list-group-item list-group-item-action list-group-item-success" style="width: 50%">Current Ride</a>
                 <ul class="list-group" style="width: 50%">
                   <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -31,16 +30,8 @@
                     <span class="badge badge-primary badge-pill">{{ current_request.vehicle_type }}</span>
                   </li>
                 </ul>
-=======
-                <tr id="ride_{{ current_request.id }}">
-                    <td>{{ current_request.destination }}</td>
-                    <td>{{ current_request.arrival_time }}</td>
-                    <td>{{ current_request.number_passenger }}</td>
-                    <td>{{ current_request.vehicle_type }}</td>
-                    <td><a href="/accounts/passenger/request/edit/{{ current_request.id }}/">Edit</a></td>
-                    <td><a href="/accounts/passenger/request/delete/{{ current_request.id }}/">Delete</a></td>
-                </tr>
->>>>>>> e493d6e51d11b45a1ac6d57b74fa8ad78de92386
+                <a href="/accounts/passenger/request/edit/{{ current_request.id }}/"><button type="submit" class="btn btn-warning" >Edit</button></a>
+                <a href="/accounts/passenger/request/delete/{{ current_request.id }}/"><button type="submit" class="btn btn-warning" >Delete</button></a>        
             {% endif %}
     </div>
     <div class="panel panel-success">
