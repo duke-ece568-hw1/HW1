@@ -89,8 +89,7 @@ def passenger_login(request):
             form = LoginForm()
 
     return render(request, 'accounts/passenger_login.html', {'form': form})
-
-def passenger_home(request):
+def passenger_display(request):
     history_request_list = Ride.objects.filter(user=request.user, isFinished=True)
     current_request_list = Ride.objects.filter(user=request.user, isFinished=False)
     if current_request_list.count() == 0:
@@ -110,7 +109,8 @@ def make_request(request):
             newride = Ride(destination=form.cleaned_data['destination'],
                         arrival_time=form.cleaned_data['arrival_time'],
                         number_passenger=form.cleaned_data['number_passenger'],
-                        passenger_id=request.user.id
+                        passenger_id=request.user.id,
+                        vehicle_type=form.cleaned_data['vehicle_type'],
                         )
             newride.save()
             newride.user.add(request.user)

@@ -31,7 +31,8 @@
         <div id="navbarSupportedContent" class="navbar-collapse collapse">
           {% if user.is_authenticated %}
           <ul class="nav navbar-nav mr-auto">
-            <li class="nav-item"><a href="/accounts/">Home</a></li>
+            {% block passenger_driver_home %}
+            {% endblock %}
             <li class="nav-item"><a href="/accounts/logout/">Log out</a></li>
             <li class="nav-item"><a href="/accounts/profile/">Profile</a></li>
             {% block passenger_driver %}
