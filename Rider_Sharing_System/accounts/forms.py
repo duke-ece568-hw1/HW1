@@ -115,7 +115,7 @@ class RequestForm(forms.ModelForm):
                                         ("Minivan", "Minivan"),
                                         ("Limo", "Limo"),
                                         ("Truck", "Truck")))
-    share_ride= forms.BooleanField(initial=False)
+    share_ride= forms.BooleanField(initial=False,required=False)
     class Meta:
         model = Ride
         fields = (

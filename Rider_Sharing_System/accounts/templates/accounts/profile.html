@@ -27,7 +27,7 @@
     </li>
   </ul>
 </div>
-  {% if user_info.isDriver %}
+  {% if user_info.isDriver == True %}
   <div>
     <ul class="list-group">
       <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -35,7 +35,7 @@
         <span class="badge badge-primary badge-pill">{{ user_info.vehicle_id }}</span>
       </li>
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        Last Passenger
+        Max Passenger
         <span class="badge badge-primary badge-pill">{{ user_info.vehicle_max_passenger}}</span>
       </li>
     </ul>
