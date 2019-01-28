@@ -110,7 +110,8 @@ def make_request(request):
             newride = Ride(destination=form.cleaned_data['destination'],
                         arrival_time=form.cleaned_data['arrival_time'],
                         number_passenger=form.cleaned_data['number_passenger'],
-                        passenger_id=request.user.id
+                        passenger_id=request.user.id,
+                        vehicle_type=form.cleaned_data['vehicle_type'],
                         )
             newride.save()
             newride.user.add(request.user)

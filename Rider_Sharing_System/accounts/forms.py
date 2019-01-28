@@ -108,7 +108,7 @@ class RequestForm(forms.ModelForm):
     number_passenger = forms.IntegerField(required=True,validators=[MinValueValidator(0), MaxValueValidator(5)])
     vehicle_type = forms.ChoiceField(choices=( ("Sedan", "Sedan"),
                                         ("SUV", "SUV"),
-                                        ("Mini Van", "Mini Van"),
+                                        ("Minivan", "Minivan"),
                                         ("Limo", "Limo"),
                                         ("Truck", "Truck")))
     class Meta:
