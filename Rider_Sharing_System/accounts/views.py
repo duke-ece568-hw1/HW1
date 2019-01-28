@@ -17,7 +17,7 @@ def home(request):
     numbers = [1, 2, 3, 4, 5]
     name = 'A.W'
     args = {'name': name, 'numbers': numbers}
-    return render(request, 'accounts/home.html', args)
+    return render(request, 'home.html', args)
 
 def register(request, isdriver=False):
     if request.method == 'POST':
@@ -150,7 +150,7 @@ def delete_request(request, ride_id):
     return HttpResponseRedirect('/accounts/passenger/')
 
 def search_for_join(request):
-    requested_rides = Ride.objects.filter(passenger_id=request.user.id, isFinished=False)
+    requested_rides = Ride.objects.filter(passenger_id=request.user.id, isFinished=False, isSharable=True)
     if len(requested_rides) != 0:
         request.session['message'] = 'You have unfinished ride.'
         return HttpResponseRedirect('/accounts/passenger')
