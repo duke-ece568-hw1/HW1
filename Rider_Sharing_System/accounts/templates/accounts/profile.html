@@ -5,28 +5,40 @@
 
 {% block body %}
 <!--This is where we refer to all those data in user model-->
-<div class="container" style="width:50% " >
-<h1>Profile</h1>
+<div class="container" style="width:50%;margin: 10px 10px;padding: 10px " >
 <div>
-  <ul  class="container list-group" style = "text-align: center;">
-    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
-">{{ user }}</li>
-    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
-">{{ user.first_name }}</li>
-    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
-">{{ user.last_name }}</li>
-    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
-">{{ user.email }}</li>
+<h1>Profile</h1>
+  <ul class="list-group" id="profile_list">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      User
+      <span class="badge badge-primary badge-pill">{{ user }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      First Name
+      <span class="badge badge-primary badge-pill">{{ user.first_name }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Last Name
+      <span class="badge badge-primary badge-pill">{{ user.last_name }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Email
+      <span class="badge badge-primary badge-pill">{{ user.email }}</span>
+    </li>
   </ul>
 </div>
   {% if user_info.isDriver %}
   <div>
-    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
-">{{ user_info.isDriver }}</li>
-    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
-">{{ user_info.vehicle_id }}</li>
-    <li class="list-group-item list" style="background: linear-gradient(to top left, #66ccff 0%, #ccff33 100%);
-">{{ user_info.vehicle_max_passenger }}</li>
+    <ul class="list-group">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        Vehicle ID
+        <span class="badge badge-primary badge-pill">{{ user_info.vehicle_id }}</span>
+      </li>
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        Last Passenger
+        <span class="badge badge-primary badge-pill">{{ user_info.vehicle_max_passenger}}</span>
+      </li>
+    </ul>
   {% endif %}
 </div>
 </div>

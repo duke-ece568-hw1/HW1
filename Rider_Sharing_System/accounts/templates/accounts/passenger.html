@@ -9,40 +9,55 @@
     {{ message }}
     {% endif %}
     {% csrf_token %}
-    <div class="panel panel-success">
-        <div class="panel-heading">Current Ride</div>
-        <table class="table table-bordered table-hover table-striped">
-            <thead></thead>
-            <tbody id = "add-body">
+    <div class="panel panel-success" style = "margin:20px">
             {% if current_request %}
-                <tr id="ride_{{ current_request.id }}">
-                    <td>{{ current_request.destination }}</td>
-                    <td>{{ current_request.arrival_time }}</td>
-                    <td>{{ current_request.number_passenger }}</td>
-                    <td>{{ current_request.vehicle_type }}</td>
-                    <td><a href="/accounts/passenger/request/edit/{{ current_request.id }}/">Edit</a></td>
-                </tr>
+             <a href="#" class="list-group-item list-group-item-action list-group-item-success" style="width: 50%">Current Ride</a>
+                <ul class="list-group" style="width: 50%">
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Destination
+                    <span class="badge badge-primary badge-pill">{{ current_request.destination }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Arrival Time
+                    <span class="badge badge-primary badge-pill">{{ current_request.arrival_time }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Rider
+                    <span class="badge badge-primary badge-pill">{{ current_request.number_passenger }}</span>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Vehicle
+                    <span class="badge badge-primary badge-pill">{{ current_request.vehicle_type }}</span>
+                  </li>
+                </ul>
             {% endif %}
-            </tbody>
-        </table>
     </div>
     <div class="panel panel-success">
-        <div class="panel-heading">History rides</div>
-        <table class="table table-bordered table-hover table-striped">
-            <thead>
-            <tr>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody id = "add-body">
             {% for ride in history_request_list %}
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Ride to {{ ride.destination }}
+            </button>
+            <div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Arrival Time
+      <span class="badge badge-primary badge-pill">{{ ride.arrival_time }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Number Passengers
+      <span class="badge badge-primary badge-pill">{{ ride.number_passenger }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      Vehicle Type
+      <span class="badge badge-primary badge-pill">{{ ride.vehicle_type}}</span>
+    </li>
+  </div>
+</div>
                 <tr id="ride_{{ ride.id }}">
                     <td>{{ ride.destination }}</td>
                     <td>{{ ride.arrival_time }}</td>
                     <td><a href="../passenger/request/{{ ride.id }}/">View</a></td>
                 </tr>
             {% endfor %}
-            </tbody>
-        </table>
     </div>
   {% endblock %}

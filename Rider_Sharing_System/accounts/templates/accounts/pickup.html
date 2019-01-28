@@ -2,7 +2,7 @@
 {%block body%}
   <div class="panel panel-success">
       <div class="panel-heading">All Ride</div>
-      <table class="table table-bordered table-hover table-striped">
+      <!-- <table class="table table-bordered table-hover table-striped">
           <thead></thead>
           <tbody id = "add-body">
           {% for ride in ride_not_picked_list %}
@@ -13,6 +13,27 @@
               </tr>
           {% endfor %}
           </tbody>
-      </table>
+      </table> -->
+      <ul class="list-group">
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Ride Destination
+    <span class="badge badge-primary badge-pill">{{ ride.destination }}</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    Ride Arrival Time
+    <span class="badge badge-primary badge-pill">{{ ride.arrival_time}}</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    number of passenger
+    <span class="badge badge-primary badge-pill">{{ride.number_passenger}}</span>
+  </li>
+  <li class="list-group-item d-flex justify-content-between align-items-center">
+    vehicle type
+    <span class="badge badge-primary badge-pill">{{ride.vehicle_type}}</span>
+  </li>
+  <a href="/accounts/driver/pickup/{{ ride.id }}/">Pickup</a>
+</ul>
+
+
   </div>
 {%endblock%}

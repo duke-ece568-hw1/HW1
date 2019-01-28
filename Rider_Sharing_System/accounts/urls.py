@@ -18,7 +18,6 @@ urlpatterns = [
     path('driver/pickup/<int:ride_id>/', views.pickup),
     path('driver/finish/<int:ride_id>/', views.finish),
     path('driver/', views.driver_home),
-
     #path('login/', auth_views.LoginView.as_view(template_name='accounts/login.html')),
     path('logout/', auth_views.LogoutView.as_view(template_name='accounts/logout.html')),
     path('profile/', views.view_profile, name='profile'),
