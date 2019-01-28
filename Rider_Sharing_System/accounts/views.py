@@ -101,10 +101,7 @@ def passenger_home(request):
             {'history_request_list': history_request_list, 'current_request': current_request,
             'message': request.session.get('message', default=None)})
 
-<<<<<<< HEAD
 
-=======
->>>>>>> e493d6e51d11b45a1ac6d57b74fa8ad78de92386
 def make_request(request):
     if request.method == 'POST':
         form = RequestForm(request.POST)
