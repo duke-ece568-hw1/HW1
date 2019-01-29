@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'widget_tweaks',
+    'bootstrap_datepicker_plus',
+    'bootstrap3_datetime',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -87,6 +89,9 @@ DATABASES = {
 }
 
 
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

@@ -104,7 +104,22 @@ class LoginForm(forms.Form):
 class RequestForm(forms.ModelForm):
 
     destination = forms.CharField(required=True)
-    arrival_time = forms.CharField(required=True)
+    earliest_hour = forms.ChoiceField(choices=((0, "0"),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),
+                                        (7, "7"),(8, "8"),(9, "9"),(10, "10"),(11, "11"),(12, "12"),(13, "13"),
+                                        (14, "14"),(15, "15"),(16, "16"),(17, "17"),(18, "18"),(19, "19"),
+                                        (20, "20"),(21, "21"),(22, "22"),(23, "23"),
+                                        ))
+    earliest_minute = forms.ChoiceField(choices=((00, "00"),(10, "10"),(20, "20"),(30, "30"),(40, "40"),(50, "50"),))
+
+    latest_hour = forms.ChoiceField(choices=((0, "0"),(1, "1"),(2, "2"),(3, "3"),(4, "4"),(5, "5"),(6, "6"),
+                                        (7, "7"),(8, "8"),(9, "9"),(10, "10"),(11, "11"),(12, "12"),(13, "13"),
+                                        (14, "14"),(15, "15"),(16, "16"),(17, "17"),(18, "18"),(19, "19"),
+                                        (20, "20"),(21, "21"),(22, "22"),(23, "23"),
+                                        ))
+    latest_minute = forms.ChoiceField(choices=((00, "00"),(10, "10"),(20, "20"),(30, "30"),(40, "40"),(50, "50"),))
+
+
+
     number_passenger = forms.ChoiceField(choices=( (1, "1"),
                                         (2, "2"),
                                         (3, "3"),
@@ -120,7 +135,10 @@ class RequestForm(forms.ModelForm):
         model = Ride
         fields = (
             'destination',
-            'arrival_time',
+            'earliest_hour',
+            'earliest_minute',
+            'latest_hour',
+            'latest_minute'
             'number_passenger',
             'vehicle_type',
             'share_ride',

@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
 {%block body%}
 <div class="panel panel-success">
-    <div class="panel-heading">All Rides</div>
-    <ul class="list-group">
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-  Ride Destination
-  <span class="badge badge-primary badge-pill">{{ ride.destination }}</span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-  Ride Arrival Time
-  <span class="badge badge-primary badge-pill">{{ ride.arrival_time}}</span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-  number of passenger
-  <span class="badge badge-primary badge-pill">{{ride.number_passenger}}</span>
-  </li>
-  <li class="list-group-item d-flex justify-content-between align-items-center">
-  vehicle type
-  <span class="badge badge-primary badge-pill">{{ride.vehicle_type}}</span>
-  </li>
+    <a href="#" class="list-group-item list-group-item-action list-group-item-success" style = "margin: 0px 0px 30px 0px">Open Rides</a>
+    <ul class="list-group w-50" style="margin: auto">
+{% for ride in ride_not_picked_list %}
+      <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center ">
+      Ride Destination
+      <span class="badge badge-primary badge-pill">{{ ride.destination }}</span>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center ">
+      Ride Arrival Time
+      <span class="badge badge-primary badge-pill">{{ ride.arrival_time}}</span>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center">
+      number of passenger
+      <span class="badge badge-primary badge-pill">{{ride.number_passenger}}</span>
+      </li>
+      <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center">
+      vehicle type
+      <span class="badge badge-primary badge-pill">{{ride.vehicle_type}}</span>
+      </li>
   {% block pickup_join %}
   {% endblock %}
+  {% endfor %}
   </ul>
 </div>
 
